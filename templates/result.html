@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CSV Analyzer Results</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-8">
+
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded shadow">
+
+        <!-- Heading -->
+        <h1 class="text-2xl font-bold mb-6">
+            CSV Analyzer Results 📊
+        </h1>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-blue-100 p-4 rounded text-center">
+                <p class="text-gray-700">Rows</p>
+                <p class="text-2xl font-bold">{{ rows }}</p>
+            </div>
+
+            <div class="bg-green-100 p-4 rounded text-center">
+                <p class="text-gray-700">Columns</p>
+                <p class="text-2xl font-bold">{{ columns }}</p>
+            </div>
+
+            <div class="bg-red-100 p-4 rounded text-center">
+                <p class="text-gray-700">Missing Values</p>
+                <p class="text-2xl font-bold">{{ missing }}</p>
+            </div>
+        </div>
+
+        <!-- CSV Preview -->
+        <h2 class="text-xl font-bold mb-4">
+            CSV Preview (First 5 Rows)
+        </h2>
+
+        <div class="overflow-x-auto mb-8">
+            {{ table | safe }}
+        </div>
+
+        <!-- Column Analysis -->
+        <h2 class="text-xl font-bold mb-4">
+            Column Analysis 📋
+        </h2>
+
+        <div class="overflow-x-auto mb-8">
+            <table class="min-w-full border border-gray-300">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="border px-4 py-2">Column Name</th>
+                        <th class="border px-4 py-2">Data Type</th>
+                        <th class="border px-4 py-2">Missing Values</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for col in column_info %}
+                    <tr class="text-center">
+                        <td class="border px-4 py-2">{{ col.name }}</td>
+                        <td class="border px-4 py-2">{{ col.dtype }}</td>
+                        <td class="border px-4 py-2">{{ col.missing }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Chart Section -->
+        {% if chart_available %}
+        <h2 class="text-xl font-bold mb-4">
+            Data Visualization 📊
+        </h2>
+
+        <div class="mb-8">
+            <img
+                src="/{{ chart_path }}"
+                alt="Data Chart"
+                class="border rounded mx-auto">
+        </div>
+        {% else %}
+        <p class="text-gray-600 mb-8">
+            No numeric columns available for chart visualization.
+        </p>
+        {% endif %}
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap gap-4">
+            <a
+                href="/"
+                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                Upload Another File
+            </a>
+
+            <a
+                href="/download"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Download Cleaned CSV ⬇️
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>
